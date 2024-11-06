@@ -21,19 +21,19 @@ jobs:
       run: go build -v
     - name: Stage 1
       run: |
-        ./britishinput
+        ./britishinput pass
     - name: Stage 2
       if: failure()
       run: |
-        ./britishinput
+        ./britishinput pass
     - name: Stage 3
       if: failure()
       run: |
-        ./britishinput
+        ./britishinput fail
     - name: Stage 4
       if: failure()
       run: |
-        ./britishinput
+        ./britishinput fail
     - name: Stage 5
       if: failure()
       run: |
