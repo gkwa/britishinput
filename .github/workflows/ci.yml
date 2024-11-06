@@ -1,5 +1,5 @@
 name: Build & Test
-'on':
+"on":
   push:
     branches:
     - '*'
@@ -9,8 +9,8 @@ name: Build & Test
   schedule:
   - cron: 01 13 * * SAT
 jobs:
-  pipeline:
-    name: Build & Test
+  stage1:
+    name: Stage 1
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -19,168 +19,161 @@ jobs:
         go-version: '>=1.21'
     - name: Build
       run: go build -v
-    - name: Stage 1
-      id: stage1
-      continue-on-error: true
-      run: |
-        if ! ./britishinput fail; then
-          echo "::warning ::Stage 1 failed"
-          exit 1
-        fi
-    - name: Check Stage 1
-      id: check1
-      run: |
-        if [[ "${{ steps.stage1.outcome }}" == "success" ]]; then
-          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
-        fi
-    - name: Stage 2
-      id: stage2
-      if: env.ANY_SUCCEEDED != 'true'
-      continue-on-error: true
-      run: |
-        if ! ./britishinput fail; then
-          echo "::warning ::Stage 2 failed"
-          exit 1
-        fi
-    - name: Check Stage 2
-      id: check2
-      if: env.ANY_SUCCEEDED != 'true'
-      run: |
-        if [[ "${{ steps.stage2.outcome }}" == "success" ]]; then
-          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
-        fi
-    - name: Stage 3
-      id: stage3
-      if: env.ANY_SUCCEEDED != 'true'
-      continue-on-error: true
-      run: |
-        if ! ./britishinput fail; then
-          echo "::warning ::Stage 3 failed"
-          exit 1
-        fi
-    - name: Check Stage 3
-      id: check3
-      if: env.ANY_SUCCEEDED != 'true'
-      run: |
-        if [[ "${{ steps.stage3.outcome }}" == "success" ]]; then
-          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
-        fi
-    - name: Stage 4
-      id: stage4
-      if: env.ANY_SUCCEEDED != 'true'
-      continue-on-error: true
-      run: |
-        if ! ./britishinput fail; then
-          echo "::warning ::Stage 4 failed"
-          exit 1
-        fi
-    - name: Check Stage 4
-      id: check4
-      if: env.ANY_SUCCEEDED != 'true'
-      run: |
-        if [[ "${{ steps.stage4.outcome }}" == "success" ]]; then
-          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
-        fi
-    - name: Stage 5
-      id: stage5
-      if: env.ANY_SUCCEEDED != 'true'
-      continue-on-error: true
-      run: |
-        if ! ./britishinput pass; then
-          echo "::warning ::Stage 5 failed"
-          exit 1
-        fi
-    - name: Check Stage 5
-      id: check5
-      if: env.ANY_SUCCEEDED != 'true'
-      run: |
-        if [[ "${{ steps.stage5.outcome }}" == "success" ]]; then
-          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
-        fi
-    - name: Stage 6
-      id: stage6
-      if: env.ANY_SUCCEEDED != 'true'
-      continue-on-error: true
-      run: |
-        if ! ./britishinput; then
-          echo "::warning ::Stage 6 failed"
-          exit 1
-        fi
-    - name: Check Stage 6
-      id: check6
-      if: env.ANY_SUCCEEDED != 'true'
-      run: |
-        if [[ "${{ steps.stage6.outcome }}" == "success" ]]; then
-          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
-        fi
-    - name: Stage 7
-      id: stage7
-      if: env.ANY_SUCCEEDED != 'true'
-      continue-on-error: true
-      run: |
-        if ! ./britishinput; then
-          echo "::warning ::Stage 7 failed"
-          exit 1
-        fi
-    - name: Check Stage 7
-      id: check7
-      if: env.ANY_SUCCEEDED != 'true'
-      run: |
-        if [[ "${{ steps.stage7.outcome }}" == "success" ]]; then
-          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
-        fi
-    - name: Stage 8
-      id: stage8
-      if: env.ANY_SUCCEEDED != 'true'
-      continue-on-error: true
-      run: |
-        if ! ./britishinput; then
-          echo "::warning ::Stage 8 failed"
-          exit 1
-        fi
-    - name: Check Stage 8
-      id: check8
-      if: env.ANY_SUCCEEDED != 'true'
-      run: |
-        if [[ "${{ steps.stage8.outcome }}" == "success" ]]; then
-          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
-        fi
-    - name: Stage 9
-      id: stage9
-      if: env.ANY_SUCCEEDED != 'true'
-      continue-on-error: true
-      run: |
-        if ! ./britishinput; then
-          echo "::warning ::Stage 9 failed"
-          exit 1
-        fi
-    - name: Check Stage 9
-      id: check9
-      if: env.ANY_SUCCEEDED != 'true'
-      run: |
-        if [[ "${{ steps.stage9.outcome }}" == "success" ]]; then
-          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
-        fi
-    - name: Stage 10
-      id: stage10
-      if: env.ANY_SUCCEEDED != 'true'
-      continue-on-error: true
-      run: |
-        if ! ./britishinput; then
-          echo "::warning ::Stage 10 failed"
-          exit 1
-        fi
-    - name: Check Stage 10
-      id: check10
-      if: env.ANY_SUCCEEDED != 'true'
-      run: |
-        if [[ "${{ steps.stage10.outcome }}" == "success" ]]; then
-          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
-        fi
-    - name: Final Status
-      if: always()
+    - name: Run Stage
+      run: ./britishinput fail
+  stage2:
+    needs: stage1
+    if: failure()
+    name: Stage 2
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+    - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
+      with:
+        go-version: '>=1.21'
+    - name: Build
+      run: go build -v
+    - name: Run Stage
+      run: ./britishinput fail
+  stage3:
+    needs: stage2
+    if: failure()
+    name: Stage 3
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+    - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
+      with:
+        go-version: '>=1.21'
+    - name: Build
+      run: go build -v
+    - name: Run Stage
+      run: ./britishinput fail
+  stage4:
+    needs: stage3
+    if: failure()
+    name: Stage 4
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+    - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
+      with:
+        go-version: '>=1.21'
+    - name: Build
+      run: go build -v
+    - name: Run Stage
+      run: ./britishinput fail
+  stage5:
+    needs: stage4
+    if: failure()
+    name: Stage 5
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+    - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
+      with:
+        go-version: '>=1.21'
+    - name: Build
+      run: go build -v
+    - name: Run Stage
+      run: ./britishinput pass
+  stage6:
+    needs: stage5
+    if: failure()
+    name: Stage 6
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+    - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
+      with:
+        go-version: '>=1.21'
+    - name: Build
+      run: go build -v
+    - name: Run Stage
+      run: ./britishinput
+  stage7:
+    needs: stage6
+    if: failure()
+    name: Stage 7
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+    - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
+      with:
+        go-version: '>=1.21'
+    - name: Build
+      run: go build -v
+    - name: Run Stage
+      run: ./britishinput
+  stage8:
+    needs: stage7
+    if: failure()
+    name: Stage 8
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+    - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
+      with:
+        go-version: '>=1.21'
+    - name: Build
+      run: go build -v
+    - name: Run Stage
+      run: ./britishinput
+  stage9:
+    needs: stage8
+    if: failure()
+    name: Stage 9
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+    - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
+      with:
+        go-version: '>=1.21'
+    - name: Build
+      run: go build -v
+    - name: Run Stage
+      run: ./britishinput
+  stage10:
+    needs: stage9
+    if: failure()
+    name: Stage 10
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+    - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
+      with:
+        go-version: '>=1.21'
+    - name: Build
+      run: go build -v
+    - name: Run Stage
+      run: ./britishinput
+  final-status:
+    needs:
+    - stage1
+    - stage2
+    - stage3
+    - stage4
+    - stage5
+    - stage6
+    - stage7
+    - stage8
+    - stage9
+    - stage10
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check Final Status
       run: |-
-        if [[ "${{ env.ANY_SUCCEEDED }}" == 'true' ]]; then
+        if [[ "${{ needs.stage1.result }}" == "success" ]] || \
+           [[ "${{ needs.stage2.result }}" == "success" ]] || \
+           [[ "${{ needs.stage3.result }}" == "success" ]] || \
+           [[ "${{ needs.stage4.result }}" == "success" ]] || \
+           [[ "${{ needs.stage5.result }}" == "success" ]] || \
+           [[ "${{ needs.stage6.result }}" == "success" ]] || \
+           [[ "${{ needs.stage7.result }}" == "success" ]] || \
+           [[ "${{ needs.stage8.result }}" == "success" ]] || \
+           [[ "${{ needs.stage9.result }}" == "success" ]] || \
+           [[ "${{ needs.stage10.result }}" == "success" ]]; then
           echo "Pipeline succeeded - a stage passed"
           exit 0
         else
