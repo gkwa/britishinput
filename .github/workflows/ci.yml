@@ -1,4 +1,4 @@
-name: Pipeline Flow Test
+name: Build & Test
 "on":
   push:
     branches:
@@ -10,7 +10,7 @@ name: Pipeline Flow Test
   - cron: 01 13 * * SAT
 jobs:
   pipeline:
-    name: Build and Test Pipeline
+    name: Build & Test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -22,109 +22,49 @@ jobs:
     - name: Stage 1
       run: |
         sleep 0.25
-        ./britishinput || exit_code=$?
-        if [ "$exit_code" != "0" ]; then
-          echo "Stage 1 failed with exit code $exit_code, proceeding to Stage 2"
-          exit $exit_code
-        fi
-        echo "Stage 1 succeeded, pipeline complete"
-        exit 0
+        ./britishinput
     - name: Stage 2
       if: failure()
       run: |
         sleep 0.25
-        ./britishinput || exit_code=$?
-        if [ "$exit_code" != "0" ]; then
-          echo "Stage 2 failed with exit code $exit_code, proceeding to Stage 3"
-          exit $exit_code
-        fi
-        echo "Stage 2 succeeded, pipeline complete"
-        exit 0
+        ./britishinput
     - name: Stage 3
       if: failure()
       run: |
         sleep 0.25
-        ./britishinput || exit_code=$?
-        if [ "$exit_code" != "0" ]; then
-          echo "Stage 3 failed with exit code $exit_code, proceeding to Stage 4"
-          exit $exit_code
-        fi
-        echo "Stage 3 succeeded, pipeline complete"
-        exit 0
+        ./britishinput
     - name: Stage 4
       if: failure()
       run: |
         sleep 0.25
-        ./britishinput || exit_code=$?
-        if [ "$exit_code" != "0" ]; then
-          echo "Stage 4 failed with exit code $exit_code, proceeding to Stage 5"
-          exit $exit_code
-        fi
-        echo "Stage 4 succeeded, pipeline complete"
-        exit 0
+        ./britishinput
     - name: Stage 5
       if: failure()
       run: |
         sleep 0.25
-        ./britishinput || exit_code=$?
-        if [ "$exit_code" != "0" ]; then
-          echo "Stage 5 failed with exit code $exit_code, proceeding to Stage 6"
-          exit $exit_code
-        fi
-        echo "Stage 5 succeeded, pipeline complete"
-        exit 0
+        ./britishinput
     - name: Stage 6
       if: failure()
       run: |
         sleep 0.25
-        ./britishinput || exit_code=$?
-        if [ "$exit_code" != "0" ]; then
-          echo "Stage 6 failed with exit code $exit_code, proceeding to Stage 7"
-          exit $exit_code
-        fi
-        echo "Stage 6 succeeded, pipeline complete"
-        exit 0
+        ./britishinput
     - name: Stage 7
       if: failure()
       run: |
         sleep 0.25
-        ./britishinput || exit_code=$?
-        if [ "$exit_code" != "0" ]; then
-          echo "Stage 7 failed with exit code $exit_code, proceeding to Stage 8"
-          exit $exit_code
-        fi
-        echo "Stage 7 succeeded, pipeline complete"
-        exit 0
+        ./britishinput
     - name: Stage 8
       if: failure()
       run: |
         sleep 0.25
-        ./britishinput || exit_code=$?
-        if [ "$exit_code" != "0" ]; then
-          echo "Stage 8 failed with exit code $exit_code, proceeding to Stage 9"
-          exit $exit_code
-        fi
-        echo "Stage 8 succeeded, pipeline complete"
-        exit 0
+        ./britishinput
     - name: Stage 9
       if: failure()
       run: |
         sleep 0.25
-        ./britishinput || exit_code=$?
-        if [ "$exit_code" != "0" ]; then
-          echo "Stage 9 failed with exit code $exit_code, proceeding to Stage 10"
-          exit $exit_code
-        fi
-        echo "Stage 9 succeeded, pipeline complete"
-        exit 0
+        ./britishinput
     - name: Stage 10
       if: failure()
-      run: |
+      run: |-
         sleep 0.25
-        ./britishinput || exit_code=$?
-        if [ "$exit_code" != "0" ]; then
-          echo "All 10 stages failed, pipeline failed"
-          exit $exit_code
-        fi
-        echo "Stage 10 succeeded, pipeline complete"
-        exit 0
+        ./britishinput
