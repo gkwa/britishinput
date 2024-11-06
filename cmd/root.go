@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
+	"github.com/gkwa/britishinput/core"
 	"github.com/gkwa/britishinput/internal/logger"
 )
 
@@ -21,12 +22,9 @@ var (
 
 var rootCmd = &cobra.Command{
 	Use:   "britishinput",
-	Short: "A brief description of your application",
-	Long:  `A longer description that spans multiple lines and likely contains examples and usage of using your application.`,
+	Short: "Exits with 50/50 probability",
+	Run:   core.RunFiftyFifty,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		// Initialize the console logger just before running
-		// a command only if one wasn't provided. This allows other
-		// callers (e.g. unit tests) to inject their own logger ahead of time.
 		if cliLogger.IsZero() {
 			cliLogger = logger.NewConsoleLogger(verbose, logFormat == "json")
 		}

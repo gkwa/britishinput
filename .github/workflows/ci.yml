@@ -1,4 +1,4 @@
-name: Build & Test
+name: Pipeline Flow Test
 "on":
   push:
     branches:
@@ -9,36 +9,122 @@ name: Build & Test
   schedule:
   - cron: 01 13 * * SAT
 jobs:
-  build:
-    name: Build & Test
-    strategy:
-      matrix:
-        os:
-        - ubuntu-latest
-        - macOS-latest
-        - windows-latest
-    runs-on: ${{ matrix.os }}
+  pipeline:
+    name: Build and Test Pipeline
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-    - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed # v5
+    - uses: actions/checkout@v4
+    - uses: actions/setup-go@v5
       with:
         go-version: '>=1.21.1'
-    - name: Set GOVERSION environment variable (Linux/macOS)
-      if: runner.os != 'Windows'
-      run: echo "GOVERSION=$(go version)" >> $GITHUB_ENV
-    - name: Set GOVERSION environment variable (Windows)
-      if: runner.os == 'Windows'
-      run: echo "GOVERSION=$(go version)" | Out-File -FilePath $env:GITHUB_ENV -Append
-    - name: Build & Test
+    - name: Build
+      run: go build -v
+    - name: Stage 1
       run: |
-        go build -v
-        go test ./...
-    - name: Run GoReleaser
-      if: runner.os == 'Linux'
-      uses: goreleaser/goreleaser-action@286f3b13b1b49da4ac219696163fb8c1c93e1200 # v6
-      with:
-        args: release --snapshot --skip=publish --clean
-    - name: Colored Output Test
-      if: runner.os == 'Linux'
-      shell: script -q -e -c "bash {0}"
-      run: go run main.go -- main.go
+        sleep 0.25
+        ./britishinput || exit_code=$?
+        if [ "$exit_code" != "0" ]; then
+          echo "Stage 1 failed with exit code $exit_code, proceeding to Stage 2"
+          exit $exit_code
+        fi
+        echo "Stage 1 succeeded, pipeline complete"
+        exit 0
+    - name: Stage 2
+      if: failure()
+      run: |
+        sleep 0.25
+        ./britishinput || exit_code=$?
+        if [ "$exit_code" != "0" ]; then
+          echo "Stage 2 failed with exit code $exit_code, proceeding to Stage 3"
+          exit $exit_code
+        fi
+        echo "Stage 2 succeeded, pipeline complete"
+        exit 0
+    - name: Stage 3
+      if: failure()
+      run: |
+        sleep 0.25
+        ./britishinput || exit_code=$?
+        if [ "$exit_code" != "0" ]; then
+          echo "Stage 3 failed with exit code $exit_code, proceeding to Stage 4"
+          exit $exit_code
+        fi
+        echo "Stage 3 succeeded, pipeline complete"
+        exit 0
+    - name: Stage 4
+      if: failure()
+      run: |
+        sleep 0.25
+        ./britishinput || exit_code=$?
+        if [ "$exit_code" != "0" ]; then
+          echo "Stage 4 failed with exit code $exit_code, proceeding to Stage 5"
+          exit $exit_code
+        fi
+        echo "Stage 4 succeeded, pipeline complete"
+        exit 0
+    - name: Stage 5
+      if: failure()
+      run: |
+        sleep 0.25
+        ./britishinput || exit_code=$?
+        if [ "$exit_code" != "0" ]; then
+          echo "Stage 5 failed with exit code $exit_code, proceeding to Stage 6"
+          exit $exit_code
+        fi
+        echo "Stage 5 succeeded, pipeline complete"
+        exit 0
+    - name: Stage 6
+      if: failure()
+      run: |
+        sleep 0.25
+        ./britishinput || exit_code=$?
+        if [ "$exit_code" != "0" ]; then
+          echo "Stage 6 failed with exit code $exit_code, proceeding to Stage 7"
+          exit $exit_code
+        fi
+        echo "Stage 6 succeeded, pipeline complete"
+        exit 0
+    - name: Stage 7
+      if: failure()
+      run: |
+        sleep 0.25
+        ./britishinput || exit_code=$?
+        if [ "$exit_code" != "0" ]; then
+          echo "Stage 7 failed with exit code $exit_code, proceeding to Stage 8"
+          exit $exit_code
+        fi
+        echo "Stage 7 succeeded, pipeline complete"
+        exit 0
+    - name: Stage 8
+      if: failure()
+      run: |
+        sleep 0.25
+        ./britishinput || exit_code=$?
+        if [ "$exit_code" != "0" ]; then
+          echo "Stage 8 failed with exit code $exit_code, proceeding to Stage 9"
+          exit $exit_code
+        fi
+        echo "Stage 8 succeeded, pipeline complete"
+        exit 0
+    - name: Stage 9
+      if: failure()
+      run: |
+        sleep 0.25
+        ./britishinput || exit_code=$?
+        if [ "$exit_code" != "0" ]; then
+          echo "Stage 9 failed with exit code $exit_code, proceeding to Stage 10"
+          exit $exit_code
+        fi
+        echo "Stage 9 succeeded, pipeline complete"
+        exit 0
+    - name: Stage 10
+      if: failure()
+      run: |
+        sleep 0.25
+        ./britishinput || exit_code=$?
+        if [ "$exit_code" != "0" ]; then
+          echo "All 10 stages failed, pipeline failed"
+          exit $exit_code
+        fi
+        echo "Stage 10 succeeded, pipeline complete"
+        exit 0
