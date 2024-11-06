@@ -22,66 +22,49 @@ jobs:
     - name: Stage 1
       id: stage1
       run: |
-        ./britishinput fail && exit 0 || exit 0
-        exit 1
+        ./britishinput fail
     - name: Stage 2
       id: stage2
-      if: steps.stage1.conclusion == 'failure'
+      if: failure()
       run: |
-        ./britishinput fail && exit 0 || exit 0
-        exit 1
+        ./britishinput fail
     - name: Stage 3
       id: stage3
-      if: steps.stage2.conclusion == 'failure'
+      if: failure()
       run: |
-        ./britishinput fail && exit 0 || exit 0
-        exit 1
+        ./britishinput fail
     - name: Stage 4
       id: stage4
-      if: steps.stage3.conclusion == 'failure'
+      if: failure()
       run: |
-        ./britishinput fail && exit 0 || exit 0
-        exit 1
+        ./britishinput fail
     - name: Stage 5
       id: stage5
-      if: steps.stage4.conclusion == 'failure'
-      run: ./britishinput pass
+      if: failure()
+      run: |
+        ./britishinput pass
     - name: Stage 6
       id: stage6
-      if: steps.stage5.conclusion == 'failure'
-      run: ./britishinput
+      if: failure()
+      run: |
+        ./britishinput
     - name: Stage 7
       id: stage7
-      if: steps.stage6.conclusion == 'failure'
-      run: ./britishinput
+      if: failure()
+      run: |
+        ./britishinput
     - name: Stage 8
       id: stage8
-      if: steps.stage7.conclusion == 'failure'
-      run: ./britishinput
+      if: failure()
+      run: |
+        ./britishinput
     - name: Stage 9
       id: stage9
-      if: steps.stage8.conclusion == 'failure'
-      run: ./britishinput
+      if: failure()
+      run: |
+        ./britishinput
     - name: Stage 10
       id: stage10
-      if: steps.stage9.conclusion == 'failure'
-      run: ./britishinput
-    - name: Check Final Status
-      if: always()
+      if: failure()
       run: |
-        if [[ "${{ steps.stage1.conclusion }}" == 'success' ]] || \
-           [[ "${{ steps.stage2.conclusion }}" == 'success' ]] || \
-           [[ "${{ steps.stage3.conclusion }}" == 'success' ]] || \
-           [[ "${{ steps.stage4.conclusion }}" == 'success' ]] || \
-           [[ "${{ steps.stage5.conclusion }}" == 'success' ]] || \
-           [[ "${{ steps.stage6.conclusion }}" == 'success' ]] || \
-           [[ "${{ steps.stage7.conclusion }}" == 'success' ]] || \
-           [[ "${{ steps.stage8.conclusion }}" == 'success' ]] || \
-           [[ "${{ steps.stage9.conclusion }}" == 'success' ]] || \
-           [[ "${{ steps.stage10.conclusion }}" == 'success' ]]; then
-          echo "Pipeline succeeded - one stage passed"
-          exit 0
-        else
-          echo "Pipeline failed - no stage passed"
-          exit 1
-        fi
+        ./britishinput
