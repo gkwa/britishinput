@@ -19,139 +19,122 @@ jobs:
         go-version: '>=1.21'
     - name: Build
       run: go build -v
+    - name: Initialize Status
+      run: |
+        echo "ANY_SUCCEEDED=false" >> $GITHUB_ENV
     - name: Stage 1
       id: stage1
       continue-on-error: true
       run: |
-        ./britishinput fail
-        exit_code=$?
-        if [ "$exit_code" == "0" ]; then
-          echo "FOUND_SUCCESS=true" >> $GITHUB_ENV
+        output=$(./britishinput fail || echo "FAILED")
+        if [[ "$output" != "FAILED" ]]; then
+          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
           exit 0
         fi
-        echo "STAGE1_FAILED=true" >> $GITHUB_ENV
         exit 1
     - name: Stage 2
       id: stage2
-      if: env.FOUND_SUCCESS != 'true' && env.STAGE1_FAILED == 'true'
+      if: env.ANY_SUCCEEDED != 'true'
       continue-on-error: true
       run: |
-        ./britishinput fail
-        exit_code=$?
-        if [ "$exit_code" == "0" ]; then
-          echo "FOUND_SUCCESS=true" >> $GITHUB_ENV
+        output=$(./britishinput fail || echo "FAILED")
+        if [[ "$output" != "FAILED" ]]; then
+          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
           exit 0
         fi
-        echo "STAGE2_FAILED=true" >> $GITHUB_ENV
         exit 1
     - name: Stage 3
       id: stage3
-      if: env.FOUND_SUCCESS != 'true' && env.STAGE2_FAILED == 'true'
+      if: env.ANY_SUCCEEDED != 'true'
       continue-on-error: true
       run: |
-        ./britishinput fail
-        exit_code=$?
-        if [ "$exit_code" == "0" ]; then
-          echo "FOUND_SUCCESS=true" >> $GITHUB_ENV
+        output=$(./britishinput fail || echo "FAILED")
+        if [[ "$output" != "FAILED" ]]; then
+          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
           exit 0
         fi
-        echo "STAGE3_FAILED=true" >> $GITHUB_ENV
         exit 1
     - name: Stage 4
       id: stage4
-      if: env.FOUND_SUCCESS != 'true' && env.STAGE3_FAILED == 'true'
+      if: env.ANY_SUCCEEDED != 'true'
       continue-on-error: true
       run: |
-        ./britishinput fail
-        exit_code=$?
-        if [ "$exit_code" == "0" ]; then
-          echo "FOUND_SUCCESS=true" >> $GITHUB_ENV
+        output=$(./britishinput fail || echo "FAILED")
+        if [[ "$output" != "FAILED" ]]; then
+          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
           exit 0
         fi
-        echo "STAGE4_FAILED=true" >> $GITHUB_ENV
         exit 1
     - name: Stage 5
       id: stage5
-      if: env.FOUND_SUCCESS != 'true' && env.STAGE4_FAILED == 'true'
+      if: env.ANY_SUCCEEDED != 'true'
       continue-on-error: true
       run: |
-        ./britishinput pass
-        exit_code=$?
-        if [ "$exit_code" == "0" ]; then
-          echo "FOUND_SUCCESS=true" >> $GITHUB_ENV
+        output=$(./britishinput pass || echo "FAILED")
+        if [[ "$output" != "FAILED" ]]; then
+          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
           exit 0
         fi
-        echo "STAGE5_FAILED=true" >> $GITHUB_ENV
         exit 1
     - name: Stage 6
       id: stage6
-      if: env.FOUND_SUCCESS != 'true' && env.STAGE5_FAILED == 'true'
+      if: env.ANY_SUCCEEDED != 'true'
       continue-on-error: true
       run: |
-        ./britishinput
-        exit_code=$?
-        if [ "$exit_code" == "0" ]; then
-          echo "FOUND_SUCCESS=true" >> $GITHUB_ENV
+        output=$(./britishinput || echo "FAILED")
+        if [[ "$output" != "FAILED" ]]; then
+          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
           exit 0
         fi
-        echo "STAGE6_FAILED=true" >> $GITHUB_ENV
         exit 1
     - name: Stage 7
       id: stage7
-      if: env.FOUND_SUCCESS != 'true' && env.STAGE6_FAILED == 'true'
+      if: env.ANY_SUCCEEDED != 'true'
       continue-on-error: true
       run: |
-        ./britishinput
-        exit_code=$?
-        if [ "$exit_code" == "0" ]; then
-          echo "FOUND_SUCCESS=true" >> $GITHUB_ENV
+        output=$(./britishinput || echo "FAILED")
+        if [[ "$output" != "FAILED" ]]; then
+          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
           exit 0
         fi
-        echo "STAGE7_FAILED=true" >> $GITHUB_ENV
         exit 1
     - name: Stage 8
       id: stage8
-      if: env.FOUND_SUCCESS != 'true' && env.STAGE7_FAILED == 'true'
+      if: env.ANY_SUCCEEDED != 'true'
       continue-on-error: true
       run: |
-        ./britishinput
-        exit_code=$?
-        if [ "$exit_code" == "0" ]; then
-          echo "FOUND_SUCCESS=true" >> $GITHUB_ENV
+        output=$(./britishinput || echo "FAILED")
+        if [[ "$output" != "FAILED" ]]; then
+          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
           exit 0
         fi
-        echo "STAGE8_FAILED=true" >> $GITHUB_ENV
         exit 1
     - name: Stage 9
       id: stage9
-      if: env.FOUND_SUCCESS != 'true' && env.STAGE8_FAILED == 'true'
+      if: env.ANY_SUCCEEDED != 'true'
       continue-on-error: true
       run: |
-        ./britishinput
-        exit_code=$?
-        if [ "$exit_code" == "0" ]; then
-          echo "FOUND_SUCCESS=true" >> $GITHUB_ENV
+        output=$(./britishinput || echo "FAILED")
+        if [[ "$output" != "FAILED" ]]; then
+          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
           exit 0
         fi
-        echo "STAGE9_FAILED=true" >> $GITHUB_ENV
         exit 1
     - name: Stage 10
       id: stage10
-      if: env.FOUND_SUCCESS != 'true' && env.STAGE9_FAILED == 'true'
+      if: env.ANY_SUCCEEDED != 'true'
       continue-on-error: true
       run: |
-        ./britishinput
-        exit_code=$?
-        if [ "$exit_code" == "0" ]; then
-          echo "FOUND_SUCCESS=true" >> $GITHUB_ENV
+        output=$(./britishinput || echo "FAILED")
+        if [[ "$output" != "FAILED" ]]; then
+          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
           exit 0
         fi
-        echo "STAGE10_FAILED=true" >> $GITHUB_ENV
         exit 1
     - name: Final Status
       if: always()
       run: |-
-        if [[ "${{ env.FOUND_SUCCESS }}" == 'true' ]]; then
+        if [[ "${{ env.ANY_SUCCEEDED }}" == 'true' ]]; then
           echo "Pipeline succeeded - a stage passed"
           exit 0
         else
