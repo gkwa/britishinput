@@ -12,6 +12,8 @@ jobs:
   pipeline:
     name: Build & Test
     runs-on: ubuntu-latest
+    env:
+      STAGE_SUCCEEDED: "false"
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-go@v5
@@ -20,64 +22,54 @@ jobs:
     - name: Build
       run: go build -v
     - name: Stage 1
+      if: env.STAGE_SUCCEEDED != 'true'
       run: |
-        if ! ./britishinput fail; then
-          echo "Stage 1 failed, continuing to Stage 2"
-          exit 1
-        fi
+        ./britishinput fail || echo "Stage 1 failed"
     - name: Stage 2
-      if: failure()
+      if: failure() && env.STAGE_SUCCEEDED != 'true'
       run: |
-        if ! ./britishinput fail; then
-          echo "Stage 2 failed, continuing to Stage 3"
-          exit 1
-        fi
+        ./britishinput fail || echo "Stage 2 failed"
     - name: Stage 3
-      if: failure()
+      if: failure() && env.STAGE_SUCCEEDED != 'true'
       run: |
-        if ! ./britishinput fail; then
-          echo "Stage 3 failed, continuing to Stage 4"
-          exit 1
-        fi
+        ./britishinput fail || echo "Stage 3 failed"
     - name: Stage 4
-      if: failure()
+      if: failure() && env.STAGE_SUCCEEDED != 'true'
       run: |
-        if ! ./britishinput fail; then
-          echo "Stage 4 failed, continuing to Stage 5"
-          exit 1
-        fi
+        ./britishinput fail || echo "Stage 4 failed"
     - name: Stage 5
-      if: failure()
+      if: failure() && env.STAGE_SUCCEEDED != 'true'
       run: |
-        ./britishinput pass
+        if ./britishinput pass; then
+          echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
+        fi
     - name: Stage 6
-      if: failure()
+      if: failure() && env.STAGE_SUCCEEDED != 'true'
       run: |
-        if ! ./britishinput; then
-          echo "Stage 6 failed, continuing to Stage 7"
-          exit 1
+        if ./britishinput; then
+          echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
         fi
     - name: Stage 7
-      if: failure()
+      if: failure() && env.STAGE_SUCCEEDED != 'true'
       run: |
-        if ! ./britishinput; then
-          echo "Stage 7 failed, continuing to Stage 8"
-          exit 1
+        if ./britishinput; then
+          echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
         fi
     - name: Stage 8
-      if: failure()
+      if: failure() && env.STAGE_SUCCEEDED != 'true'
       run: |
-        if ! ./britishinput; then
-          echo "Stage 8 failed, continuing to Stage 9"
-          exit 1
+        if ./britishinput; then
+          echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
         fi
     - name: Stage 9
-      if: failure()
+      if: failure() && env.STAGE_SUCCEEDED != 'true'
       run: |
-        if ! ./britishinput; then
-          echo "Stage 9 failed, continuing to Stage 10"
-          exit 1
+        if ./britishinput; then
+          echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
         fi
     - name: Stage 10
-      if: failure()
-      run: ./britishinput
+      if: failure() && env.STAGE_SUCCEEDED != 'true'
+      run: |
+        if ./britishinput; then
+          echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
+        fi
