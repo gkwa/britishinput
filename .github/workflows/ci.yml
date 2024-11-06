@@ -22,72 +22,112 @@ jobs:
     - name: Stage 1
       id: stage1
       run: |
-        if ./britishinput fail; then
-          echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
-        fi
+        ./britishinput fail || {
+          exit_code=$?
+          if [ "$exit_code" == "0" ]; then
+            echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
+          fi
+          exit $exit_code
+        }
     - name: Stage 2
       id: stage2
       if: failure() && env.STAGE_SUCCEEDED != 'true'
       run: |
-        if ./britishinput fail; then
-          echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
-        fi
+        ./britishinput fail || {
+          exit_code=$?
+          if [ "$exit_code" == "0" ]; then
+            echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
+          fi
+          exit $exit_code
+        }
     - name: Stage 3
       id: stage3
       if: failure() && env.STAGE_SUCCEEDED != 'true'
       run: |
-        if ./britishinput fail; then
-          echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
-        fi
+        ./britishinput fail || {
+          exit_code=$?
+          if [ "$exit_code" == "0" ]; then
+            echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
+          fi
+          exit $exit_code
+        }
     - name: Stage 4
       id: stage4
       if: failure() && env.STAGE_SUCCEEDED != 'true'
       run: |
-        if ./britishinput fail; then
-          echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
-        fi
+        ./britishinput fail || {
+          exit_code=$?
+          if [ "$exit_code" == "0" ]; then
+            echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
+          fi
+          exit $exit_code
+        }
     - name: Stage 5
       id: stage5
       if: failure() && env.STAGE_SUCCEEDED != 'true'
       run: |
-        if ./britishinput pass; then
-          echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
-        fi
+        ./britishinput pass || {
+          exit_code=$?
+          if [ "$exit_code" == "0" ]; then
+            echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
+          fi
+          exit $exit_code
+        }
     - name: Stage 6
       id: stage6
       if: failure() && env.STAGE_SUCCEEDED != 'true'
       run: |
-        if ./britishinput; then
-          echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
-        fi
+        ./britishinput || {
+          exit_code=$?
+          if [ "$exit_code" == "0" ]; then
+            echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
+          fi
+          exit $exit_code
+        }
     - name: Stage 7
       id: stage7
       if: failure() && env.STAGE_SUCCEEDED != 'true'
       run: |
-        if ./britishinput; then
-          echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
-        fi
+        ./britishinput || {
+          exit_code=$?
+          if [ "$exit_code" == "0" ]; then
+            echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
+          fi
+          exit $exit_code
+        }
     - name: Stage 8
       id: stage8
       if: failure() && env.STAGE_SUCCEEDED != 'true'
       run: |
-        if ./britishinput; then
-          echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
-        fi
+        ./britishinput || {
+          exit_code=$?
+          if [ "$exit_code" == "0" ]; then
+            echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
+          fi
+          exit $exit_code
+        }
     - name: Stage 9
       id: stage9
       if: failure() && env.STAGE_SUCCEEDED != 'true'
       run: |
-        if ./britishinput; then
-          echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
-        fi
+        ./britishinput || {
+          exit_code=$?
+          if [ "$exit_code" == "0" ]; then
+            echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
+          fi
+          exit $exit_code
+        }
     - name: Stage 10
       id: stage10
       if: failure() && env.STAGE_SUCCEEDED != 'true'
       run: |
-        if ./britishinput; then
-          echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
-        fi
+        ./britishinput || {
+          exit_code=$?
+          if [ "$exit_code" == "0" ]; then
+            echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
+          fi
+          exit $exit_code
+        }
     - name: Final Status
       if: always()
       run: |
