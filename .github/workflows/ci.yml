@@ -23,7 +23,8 @@ jobs:
       run: ./britishinput fail
   stage2:
     needs: stage1
-    if: failure()
+    if: |
+      needs.stage1.result == 'failure'
     name: Stage 2
     runs-on: ubuntu-latest
     steps:
@@ -36,8 +37,12 @@ jobs:
     - name: Run Stage
       run: ./britishinput fail
   stage3:
-    needs: stage2
-    if: failure()
+    needs:
+    - stage1
+    - stage2
+    if: |
+      needs.stage1.result == 'failure' &&
+      needs.stage2.result == 'failure'
     name: Stage 3
     runs-on: ubuntu-latest
     steps:
@@ -50,8 +55,14 @@ jobs:
     - name: Run Stage
       run: ./britishinput fail
   stage4:
-    needs: stage3
-    if: failure()
+    needs:
+    - stage1
+    - stage2
+    - stage3
+    if: |
+      needs.stage1.result == 'failure' &&
+      needs.stage2.result == 'failure' &&
+      needs.stage3.result == 'failure'
     name: Stage 4
     runs-on: ubuntu-latest
     steps:
@@ -64,8 +75,16 @@ jobs:
     - name: Run Stage
       run: ./britishinput fail
   stage5:
-    needs: stage4
-    if: failure()
+    needs:
+    - stage1
+    - stage2
+    - stage3
+    - stage4
+    if: |
+      needs.stage1.result == 'failure' &&
+      needs.stage2.result == 'failure' &&
+      needs.stage3.result == 'failure' &&
+      needs.stage4.result == 'failure'
     name: Stage 5
     runs-on: ubuntu-latest
     steps:
@@ -78,8 +97,18 @@ jobs:
     - name: Run Stage
       run: ./britishinput pass
   stage6:
-    needs: stage5
-    if: failure()
+    needs:
+    - stage1
+    - stage2
+    - stage3
+    - stage4
+    - stage5
+    if: |
+      needs.stage1.result == 'failure' &&
+      needs.stage2.result == 'failure' &&
+      needs.stage3.result == 'failure' &&
+      needs.stage4.result == 'failure' &&
+      needs.stage5.result == 'failure'
     name: Stage 6
     runs-on: ubuntu-latest
     steps:
@@ -92,8 +121,20 @@ jobs:
     - name: Run Stage
       run: ./britishinput
   stage7:
-    needs: stage6
-    if: failure()
+    needs:
+    - stage1
+    - stage2
+    - stage3
+    - stage4
+    - stage5
+    - stage6
+    if: |
+      needs.stage1.result == 'failure' &&
+      needs.stage2.result == 'failure' &&
+      needs.stage3.result == 'failure' &&
+      needs.stage4.result == 'failure' &&
+      needs.stage5.result == 'failure' &&
+      needs.stage6.result == 'failure'
     name: Stage 7
     runs-on: ubuntu-latest
     steps:
@@ -106,8 +147,22 @@ jobs:
     - name: Run Stage
       run: ./britishinput
   stage8:
-    needs: stage7
-    if: failure()
+    needs:
+    - stage1
+    - stage2
+    - stage3
+    - stage4
+    - stage5
+    - stage6
+    - stage7
+    if: |
+      needs.stage1.result == 'failure' &&
+      needs.stage2.result == 'failure' &&
+      needs.stage3.result == 'failure' &&
+      needs.stage4.result == 'failure' &&
+      needs.stage5.result == 'failure' &&
+      needs.stage6.result == 'failure' &&
+      needs.stage7.result == 'failure'
     name: Stage 8
     runs-on: ubuntu-latest
     steps:
@@ -120,8 +175,24 @@ jobs:
     - name: Run Stage
       run: ./britishinput
   stage9:
-    needs: stage8
-    if: failure()
+    needs:
+    - stage1
+    - stage2
+    - stage3
+    - stage4
+    - stage5
+    - stage6
+    - stage7
+    - stage8
+    if: |
+      needs.stage1.result == 'failure' &&
+      needs.stage2.result == 'failure' &&
+      needs.stage3.result == 'failure' &&
+      needs.stage4.result == 'failure' &&
+      needs.stage5.result == 'failure' &&
+      needs.stage6.result == 'failure' &&
+      needs.stage7.result == 'failure' &&
+      needs.stage8.result == 'failure'
     name: Stage 9
     runs-on: ubuntu-latest
     steps:
@@ -134,8 +205,26 @@ jobs:
     - name: Run Stage
       run: ./britishinput
   stage10:
-    needs: stage9
-    if: failure()
+    needs:
+    - stage1
+    - stage2
+    - stage3
+    - stage4
+    - stage5
+    - stage6
+    - stage7
+    - stage8
+    - stage9
+    if: |
+      needs.stage1.result == 'failure' &&
+      needs.stage2.result == 'failure' &&
+      needs.stage3.result == 'failure' &&
+      needs.stage4.result == 'failure' &&
+      needs.stage5.result == 'failure' &&
+      needs.stage6.result == 'failure' &&
+      needs.stage7.result == 'failure' &&
+      needs.stage8.result == 'failure' &&
+      needs.stage9.result == 'failure'
     name: Stage 10
     runs-on: ubuntu-latest
     steps:
