@@ -43,28 +43,44 @@ jobs:
       if: failure()
       run: |
         ./britishinput pass
+        echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
+    - name: Early Success Check
+      if: env.STAGE_SUCCEEDED == 'true'
+      run: |
+        echo "A stage has passed, marking pipeline as successful"
+        exit 0
     - name: Stage 6
       id: stage6
-      if: failure()
+      if: failure() && env.STAGE_SUCCEEDED != 'true'
       run: |
         ./britishinput
     - name: Stage 7
       id: stage7
-      if: failure()
+      if: failure() && env.STAGE_SUCCEEDED != 'true'
       run: |
         ./britishinput
     - name: Stage 8
       id: stage8
-      if: failure()
+      if: failure() && env.STAGE_SUCCEEDED != 'true'
       run: |
         ./britishinput
     - name: Stage 9
       id: stage9
-      if: failure()
+      if: failure() && env.STAGE_SUCCEEDED != 'true'
       run: |
         ./britishinput
     - name: Stage 10
       id: stage10
-      if: failure()
+      if: failure() && env.STAGE_SUCCEEDED != 'true'
       run: |
         ./britishinput
+    - name: Final Status
+      if: always()
+      run: |
+        if [[ "${{ env.STAGE_SUCCEEDED }}" == 'true' ]]; then
+          echo "Pipeline succeeded - a stage passed"
+          exit 0
+        else
+          echo "Pipeline failed - no stage passed"
+          exit 1
+        fi
