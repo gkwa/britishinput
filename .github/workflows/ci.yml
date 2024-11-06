@@ -19,61 +19,33 @@ jobs:
         go-version: '>=1.21'
     - name: Build
       run: go build -v
-    - name: Stage 1
-      id: stage1
+    - name: Run Stages
+      id: run_stages
       run: |
-        ./britishinput fail
-    - name: Stage 2
-      id: stage2
-      if: failure()
-      run: |
-        ./britishinput fail
-    - name: Stage 3
-      id: stage3
-      if: failure()
-      run: |
-        ./britishinput fail
-    - name: Stage 4
-      id: stage4
-      if: failure()
-      run: |
-        ./britishinput fail
-    - name: Stage 5
-      id: stage5
-      if: failure()
-      run: |
-        ./britishinput pass
-        echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
-    - name: Early Success Check
-      if: env.STAGE_SUCCEEDED == 'true'
-      run: |
-        echo "A stage has passed, marking pipeline as successful"
-        exit 0
-    - name: Stage 6
-      id: stage6
-      if: failure() && env.STAGE_SUCCEEDED != 'true'
-      run: |
-        ./britishinput
-    - name: Stage 7
-      id: stage7
-      if: failure() && env.STAGE_SUCCEEDED != 'true'
-      run: |
-        ./britishinput
-    - name: Stage 8
-      id: stage8
-      if: failure() && env.STAGE_SUCCEEDED != 'true'
-      run: |
-        ./britishinput
-    - name: Stage 9
-      id: stage9
-      if: failure() && env.STAGE_SUCCEEDED != 'true'
-      run: |
-        ./britishinput
-    - name: Stage 10
-      id: stage10
-      if: failure() && env.STAGE_SUCCEEDED != 'true'
-      run: |
-        ./britishinput
+        for i in {1..4}; do
+          echo "::group::Stage $i"
+          ./britishinput fail || continue
+          echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
+          exit 0
+          echo "::endgroup::"
+        done
+
+        echo "::group::Stage 5"
+        if ./britishinput pass; then
+          echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
+          exit 0
+        fi
+        echo "::endgroup::"
+
+        for i in {6..10}; do
+          echo "::group::Stage $i"
+          ./britishinput || continue
+          echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
+          exit 0
+          echo "::endgroup::"
+        done
+
+        exit 1
     - name: Final Status
       if: always()
       run: |
