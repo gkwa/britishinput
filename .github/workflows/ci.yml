@@ -20,41 +20,68 @@ jobs:
     - name: Build
       run: go build -v
     - name: Stage 1
+      id: stage1
+      continue-on-error: true
       run: |
         ./britishinput fail
+        echo "success=true" >> $GITHUB_OUTPUT
     - name: Stage 2
-      if: failure()
+      id: stage2
+      if: steps.stage1.outputs.success != 'true'
+      continue-on-error: true
       run: |
         ./britishinput fail
+        echo "success=true" >> $GITHUB_OUTPUT
     - name: Stage 3
-      if: failure()
+      id: stage3
+      if: steps.stage2.outputs.success != 'true'
+      continue-on-error: true
       run: |
         ./britishinput fail
+        echo "success=true" >> $GITHUB_OUTPUT
     - name: Stage 4
-      if: failure()
+      id: stage4
+      if: steps.stage3.outputs.success != 'true'
+      continue-on-error: true
       run: |
         ./britishinput fail
+        echo "success=true" >> $GITHUB_OUTPUT
     - name: Stage 5
-      if: failure()
+      id: stage5
+      if: steps.stage4.outputs.success != 'true'
+      continue-on-error: true
       run: |
         ./britishinput pass
+        echo "success=true" >> $GITHUB_OUTPUT
     - name: Stage 6
-      if: failure()
+      id: stage6
+      if: steps.stage5.outputs.success != 'true'
+      continue-on-error: true
       run: |
         ./britishinput
+        echo "success=true" >> $GITHUB_OUTPUT
     - name: Stage 7
-      if: failure()
+      id: stage7
+      if: steps.stage6.outputs.success != 'true'
+      continue-on-error: true
       run: |
         ./britishinput
+        echo "success=true" >> $GITHUB_OUTPUT
     - name: Stage 8
-      if: failure()
+      id: stage8
+      if: steps.stage7.outputs.success != 'true'
+      continue-on-error: true
       run: |
         ./britishinput
+        echo "success=true" >> $GITHUB_OUTPUT
     - name: Stage 9
-      if: failure()
+      id: stage9
+      if: steps.stage8.outputs.success != 'true'
+      continue-on-error: true
       run: |
         ./britishinput
+        echo "success=true" >> $GITHUB_OUTPUT
     - name: Stage 10
-      if: failure()
-      run: |-
+      if: steps.stage9.outputs.success != 'true'
+      run: |
         ./britishinput
