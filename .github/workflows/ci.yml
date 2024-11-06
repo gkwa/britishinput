@@ -19,118 +19,164 @@ jobs:
         go-version: '>=1.21'
     - name: Build
       run: go build -v
-    - name: Initialize Status
-      run: |
-        echo "ANY_SUCCEEDED=false" >> $GITHUB_ENV
     - name: Stage 1
       id: stage1
       continue-on-error: true
       run: |
-        output=$(./britishinput fail || echo "FAILED")
-        if [[ "$output" != "FAILED" ]]; then
-          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
-          exit 0
+        if ! ./britishinput fail; then
+          echo "::warning ::Stage 1 failed"
+          exit 1
         fi
-        exit 1
+    - name: Check Stage 1
+      id: check1
+      run: |
+        if [[ "${{ steps.stage1.outcome }}" == "success" ]]; then
+          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
+        fi
     - name: Stage 2
       id: stage2
       if: env.ANY_SUCCEEDED != 'true'
       continue-on-error: true
       run: |
-        output=$(./britishinput fail || echo "FAILED")
-        if [[ "$output" != "FAILED" ]]; then
-          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
-          exit 0
+        if ! ./britishinput fail; then
+          echo "::warning ::Stage 2 failed"
+          exit 1
         fi
-        exit 1
+    - name: Check Stage 2
+      id: check2
+      if: env.ANY_SUCCEEDED != 'true'
+      run: |
+        if [[ "${{ steps.stage2.outcome }}" == "success" ]]; then
+          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
+        fi
     - name: Stage 3
       id: stage3
       if: env.ANY_SUCCEEDED != 'true'
       continue-on-error: true
       run: |
-        output=$(./britishinput fail || echo "FAILED")
-        if [[ "$output" != "FAILED" ]]; then
-          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
-          exit 0
+        if ! ./britishinput fail; then
+          echo "::warning ::Stage 3 failed"
+          exit 1
         fi
-        exit 1
+    - name: Check Stage 3
+      id: check3
+      if: env.ANY_SUCCEEDED != 'true'
+      run: |
+        if [[ "${{ steps.stage3.outcome }}" == "success" ]]; then
+          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
+        fi
     - name: Stage 4
       id: stage4
       if: env.ANY_SUCCEEDED != 'true'
       continue-on-error: true
       run: |
-        output=$(./britishinput fail || echo "FAILED")
-        if [[ "$output" != "FAILED" ]]; then
-          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
-          exit 0
+        if ! ./britishinput fail; then
+          echo "::warning ::Stage 4 failed"
+          exit 1
         fi
-        exit 1
+    - name: Check Stage 4
+      id: check4
+      if: env.ANY_SUCCEEDED != 'true'
+      run: |
+        if [[ "${{ steps.stage4.outcome }}" == "success" ]]; then
+          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
+        fi
     - name: Stage 5
       id: stage5
       if: env.ANY_SUCCEEDED != 'true'
       continue-on-error: true
       run: |
-        output=$(./britishinput pass || echo "FAILED")
-        if [[ "$output" != "FAILED" ]]; then
-          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
-          exit 0
+        if ! ./britishinput pass; then
+          echo "::warning ::Stage 5 failed"
+          exit 1
         fi
-        exit 1
+    - name: Check Stage 5
+      id: check5
+      if: env.ANY_SUCCEEDED != 'true'
+      run: |
+        if [[ "${{ steps.stage5.outcome }}" == "success" ]]; then
+          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
+        fi
     - name: Stage 6
       id: stage6
       if: env.ANY_SUCCEEDED != 'true'
       continue-on-error: true
       run: |
-        output=$(./britishinput || echo "FAILED")
-        if [[ "$output" != "FAILED" ]]; then
-          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
-          exit 0
+        if ! ./britishinput; then
+          echo "::warning ::Stage 6 failed"
+          exit 1
         fi
-        exit 1
+    - name: Check Stage 6
+      id: check6
+      if: env.ANY_SUCCEEDED != 'true'
+      run: |
+        if [[ "${{ steps.stage6.outcome }}" == "success" ]]; then
+          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
+        fi
     - name: Stage 7
       id: stage7
       if: env.ANY_SUCCEEDED != 'true'
       continue-on-error: true
       run: |
-        output=$(./britishinput || echo "FAILED")
-        if [[ "$output" != "FAILED" ]]; then
-          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
-          exit 0
+        if ! ./britishinput; then
+          echo "::warning ::Stage 7 failed"
+          exit 1
         fi
-        exit 1
+    - name: Check Stage 7
+      id: check7
+      if: env.ANY_SUCCEEDED != 'true'
+      run: |
+        if [[ "${{ steps.stage7.outcome }}" == "success" ]]; then
+          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
+        fi
     - name: Stage 8
       id: stage8
       if: env.ANY_SUCCEEDED != 'true'
       continue-on-error: true
       run: |
-        output=$(./britishinput || echo "FAILED")
-        if [[ "$output" != "FAILED" ]]; then
-          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
-          exit 0
+        if ! ./britishinput; then
+          echo "::warning ::Stage 8 failed"
+          exit 1
         fi
-        exit 1
+    - name: Check Stage 8
+      id: check8
+      if: env.ANY_SUCCEEDED != 'true'
+      run: |
+        if [[ "${{ steps.stage8.outcome }}" == "success" ]]; then
+          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
+        fi
     - name: Stage 9
       id: stage9
       if: env.ANY_SUCCEEDED != 'true'
       continue-on-error: true
       run: |
-        output=$(./britishinput || echo "FAILED")
-        if [[ "$output" != "FAILED" ]]; then
-          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
-          exit 0
+        if ! ./britishinput; then
+          echo "::warning ::Stage 9 failed"
+          exit 1
         fi
-        exit 1
+    - name: Check Stage 9
+      id: check9
+      if: env.ANY_SUCCEEDED != 'true'
+      run: |
+        if [[ "${{ steps.stage9.outcome }}" == "success" ]]; then
+          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
+        fi
     - name: Stage 10
       id: stage10
       if: env.ANY_SUCCEEDED != 'true'
       continue-on-error: true
       run: |
-        output=$(./britishinput || echo "FAILED")
-        if [[ "$output" != "FAILED" ]]; then
-          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
-          exit 0
+        if ! ./britishinput; then
+          echo "::warning ::Stage 10 failed"
+          exit 1
         fi
-        exit 1
+    - name: Check Stage 10
+      id: check10
+      if: env.ANY_SUCCEEDED != 'true'
+      run: |
+        if [[ "${{ steps.stage10.outcome }}" == "success" ]]; then
+          echo "ANY_SUCCEEDED=true" >> $GITHUB_ENV
+        fi
     - name: Final Status
       if: always()
       run: |-
