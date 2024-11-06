@@ -21,67 +21,99 @@ jobs:
       run: go build -v
     - name: Stage 1
       id: stage1
-      continue-on-error: true
       run: |
-        ./britishinput fail
-        echo "success=true" >> $GITHUB_OUTPUT
+        if ./britishinput fail; then
+          echo "success=true" >> $GITHUB_OUTPUT
+        else
+          echo "success=false" >> $GITHUB_OUTPUT
+          exit 1
+        fi
     - name: Stage 2
       id: stage2
-      if: steps.stage1.outputs.success != 'true'
-      continue-on-error: true
+      if: steps.stage1.success == false
       run: |
-        ./britishinput fail
-        echo "success=true" >> $GITHUB_OUTPUT
+        if ./britishinput fail; then
+          echo "success=true" >> $GITHUB_OUTPUT
+        else
+          echo "success=false" >> $GITHUB_OUTPUT
+          exit 1
+        fi
     - name: Stage 3
       id: stage3
-      if: steps.stage2.outputs.success != 'true'
-      continue-on-error: true
+      if: steps.stage2.success == false
       run: |
-        ./britishinput fail
-        echo "success=true" >> $GITHUB_OUTPUT
+        if ./britishinput fail; then
+          echo "success=true" >> $GITHUB_OUTPUT
+        else
+          echo "success=false" >> $GITHUB_OUTPUT
+          exit 1
+        fi
     - name: Stage 4
       id: stage4
-      if: steps.stage3.outputs.success != 'true'
-      continue-on-error: true
+      if: steps.stage3.success == false
       run: |
-        ./britishinput fail
-        echo "success=true" >> $GITHUB_OUTPUT
+        if ./britishinput fail; then
+          echo "success=true" >> $GITHUB_OUTPUT
+        else
+          echo "success=false" >> $GITHUB_OUTPUT
+          exit 1
+        fi
     - name: Stage 5
       id: stage5
-      if: steps.stage4.outputs.success != 'true'
-      continue-on-error: true
+      if: steps.stage4.success == false
       run: |
-        ./britishinput pass
-        echo "success=true" >> $GITHUB_OUTPUT
+        if ./britishinput pass; then
+          echo "success=true" >> $GITHUB_OUTPUT
+        else
+          echo "success=false" >> $GITHUB_OUTPUT
+          exit 1
+        fi
     - name: Stage 6
       id: stage6
-      if: steps.stage5.outputs.success != 'true'
-      continue-on-error: true
+      if: steps.stage5.success == false
       run: |
-        ./britishinput
-        echo "success=true" >> $GITHUB_OUTPUT
+        if ./britishinput; then
+          echo "success=true" >> $GITHUB_OUTPUT
+        else
+          echo "success=false" >> $GITHUB_OUTPUT
+          exit 1
+        fi
     - name: Stage 7
       id: stage7
-      if: steps.stage6.outputs.success != 'true'
-      continue-on-error: true
+      if: steps.stage6.success == false
       run: |
-        ./britishinput
-        echo "success=true" >> $GITHUB_OUTPUT
+        if ./britishinput; then
+          echo "success=true" >> $GITHUB_OUTPUT
+        else
+          echo "success=false" >> $GITHUB_OUTPUT
+          exit 1
+        fi
     - name: Stage 8
       id: stage8
-      if: steps.stage7.outputs.success != 'true'
-      continue-on-error: true
+      if: steps.stage7.success == false
       run: |
-        ./britishinput
-        echo "success=true" >> $GITHUB_OUTPUT
+        if ./britishinput; then
+          echo "success=true" >> $GITHUB_OUTPUT
+        else
+          echo "success=false" >> $GITHUB_OUTPUT
+          exit 1
+        fi
     - name: Stage 9
       id: stage9
-      if: steps.stage8.outputs.success != 'true'
-      continue-on-error: true
+      if: steps.stage8.success == false
       run: |
-        ./britishinput
-        echo "success=true" >> $GITHUB_OUTPUT
+        if ./britishinput; then
+          echo "success=true" >> $GITHUB_OUTPUT
+        else
+          echo "success=false" >> $GITHUB_OUTPUT
+          exit 1
+        fi
     - name: Stage 10
-      if: steps.stage9.outputs.success != 'true'
+      if: steps.stage9.success == false
       run: |
-        ./britishinput
+        if ./britishinput; then
+          echo "success=true" >> $GITHUB_OUTPUT
+        else
+          echo "success=false" >> $GITHUB_OUTPUT
+          exit 1
+        fi
