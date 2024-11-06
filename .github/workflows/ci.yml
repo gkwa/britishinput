@@ -13,46 +13,38 @@ jobs:
     name: Build & Test
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-    - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed # v5
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+    - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
       with:
         go-version: '>=1.21'
     - name: Build
       run: go build -v
-    - name: Run Stages
-      id: run_stages
-      run: |
-        for i in {1..4}; do
-          echo "::group::Stage $i"
-          ./britishinput fail || continue
-          echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
-          exit 0
-          echo "::endgroup::"
-        done
-
-        echo "::group::Stage 5"
-        if ./britishinput pass; then
-          echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
-          exit 0
-        fi
-        echo "::endgroup::"
-
-        for i in {6..10}; do
-          echo "::group::Stage $i"
-          ./britishinput || continue
-          echo "STAGE_SUCCEEDED=true" >> $GITHUB_ENV
-          exit 0
-          echo "::endgroup::"
-        done
-
-        exit 1
-    - name: Final Status
-      if: always()
-      run: |
-        if [[ "${{ env.STAGE_SUCCEEDED }}" == 'true' ]]; then
-          echo "Pipeline succeeded - a stage passed"
-          exit 0
-        else
-          echo "Pipeline failed - no stage passed"
-          exit 1
-        fi
+    - name: Stage 1
+      run: ./britishinput fail
+    - name: Stage 2
+      if: failure()
+      run: ./britishinput fail
+    - name: Stage 3
+      if: failure()
+      run: ./britishinput fail
+    - name: Stage 4
+      if: failure()
+      run: ./britishinput fail
+    - name: Stage 5
+      if: failure()
+      run: ./britishinput pass
+    - name: Stage 6
+      if: failure()
+      run: ./britishinput
+    - name: Stage 7
+      if: failure()
+      run: ./britishinput
+    - name: Stage 8
+      if: failure()
+      run: ./britishinput
+    - name: Stage 9
+      if: failure()
+      run: ./britishinput
+    - name: Stage 10
+      if: failure()
+      run: ./britishinput
