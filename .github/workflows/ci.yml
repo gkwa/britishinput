@@ -21,50 +21,40 @@ jobs:
       run: go build -v
     - name: Stage 1
       run: |
-        sleep 0.25
         ./britishinput
     - name: Stage 2
       if: failure()
       run: |
-        sleep 0.25
         ./britishinput
     - name: Stage 3
       if: failure()
       run: |
-        sleep 0.25
         ./britishinput
     - name: Stage 4
       if: failure()
       run: |
-        sleep 0.25
         ./britishinput
     - name: Stage 5
       if: failure()
       run: |
-        sleep 0.25
         ./britishinput
     - name: Stage 6
       if: failure()
       run: |
-        sleep 0.25
         ./britishinput
     - name: Stage 7
       if: failure()
       run: |
-        sleep 0.25
         ./britishinput
     - name: Stage 8
       if: failure()
       run: |
-        sleep 0.25
         ./britishinput
     - name: Stage 9
       if: failure()
       run: |
-        sleep 0.25
         ./britishinput
     - name: Stage 10
       if: failure()
       run: |-
-        sleep 0.25
         ./britishinput
