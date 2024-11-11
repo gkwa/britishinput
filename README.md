@@ -91,27 +91,6 @@ The tool can help validate:
 - JSON logging support
 - Verbose mode for debugging
 
-## Configuration
-
-BritishInput can be configured using:
-
-- Command line flags
-- Environment variables
-- Configuration file (`$HOME/.britishinput.yaml`)
-
-Available options:
-
-```bash
---config      # Config file path
---verbose|-v  # Increase verbosity
---log-format  # json or text (default: text)
-```
-
-## System Requirements
-
-- Go 1.21 or higher
-- Linux, macOS, or Windows
-
 ## Version Information
 
 View the current version:
