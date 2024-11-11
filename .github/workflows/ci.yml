@@ -106,7 +106,7 @@ jobs:
       - name: Run Stage
         run: ./britishinput
   stage8:
-    needs: stage8
+    needs: stage7
     if: failure()
     name: Stage 8
     runs-on: ubuntu-latest
