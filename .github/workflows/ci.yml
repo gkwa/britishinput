@@ -31,7 +31,9 @@ jobs:
       - run: ./britishinput fail
   final-status:
     name: All Tests Passed
-    needs: [stage1, stage2]
+    needs:
+      - stage1
+      - stage2
     if: always()
     runs-on: ubuntu-latest
     steps:
