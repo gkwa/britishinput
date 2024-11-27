@@ -42,7 +42,7 @@ jobs:
              [[ "${{ needs.stage2.result }}" == "success" ]]; then \
             echo "Pipeline succeeded - a stage passed"
             exit 0
-          else
-            echo "Pipeline failed - no stage passed"
-            exit 1
           fi
+
+          echo "Pipeline failed - no stage passed"
+          exit 1
