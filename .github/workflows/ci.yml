@@ -28,121 +28,17 @@ jobs:
         with:
           go-version: ">=1.21"
       - run: go build -v
-      - run: ./britishinput fail
-  stage3:
-    needs: stage2
-    if: failure()
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3b9b8c884f6b4bb4d5be2779c26374abadae0871
-      - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
-        with:
-          go-version: ">=1.21"
-      - run: go build -v
-      - run: ./britishinput fail
-  stage4:
-    needs: stage3
-    if: failure()
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3b9b8c884f6b4bb4d5be2779c26374abadae0871
-      - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
-        with:
-          go-version: ">=1.21"
-      - run: go build -v
-      - run: ./britishinput fail
-  stage5:
-    needs: stage4
-    if: failure()
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3b9b8c884f6b4bb4d5be2779c26374abadae0871
-      - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
-        with:
-          go-version: ">=1.21"
-      - run: go build -v
       - run: ./britishinput pass
-  stage6:
-    needs: stage5
-    if: failure()
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3b9b8c884f6b4bb4d5be2779c26374abadae0871
-      - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
-        with:
-          go-version: ">=1.21"
-      - run: go build -v
-      - run: ./britishinput
-  stage7:
-    needs: stage6
-    if: failure()
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3b9b8c884f6b4bb4d5be2779c26374abadae0871
-      - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
-        with:
-          go-version: ">=1.21"
-      - run: go build -v
-      - run: ./britishinput
-  stage8:
-    needs: stage7
-    if: failure()
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3b9b8c884f6b4bb4d5be2779c26374abadae0871
-      - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
-        with:
-          go-version: ">=1.21"
-      - run: go build -v
-      - run: ./britishinput
-  stage9:
-    needs: stage8
-    if: failure()
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3b9b8c884f6b4bb4d5be2779c26374abadae0871
-      - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
-        with:
-          go-version: ">=1.21"
-      - run: go build -v
-      - run: ./britishinput
-  stage10:
-    needs: stage9
-    if: failure()
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3b9b8c884f6b4bb4d5be2779c26374abadae0871
-      - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
-        with:
-          go-version: ">=1.21"
-      - run: go build -v
-      - run: ./britishinput
   final-status:
     needs:
       - stage1
       - stage2
-      - stage3
-      - stage4
-      - stage5
-      - stage6
-      - stage7
-      - stage8
-      - stage9
-      - stage10
     if: always()
     runs-on: ubuntu-latest
     steps:
       - run: |-
           if [[ "${{ needs.stage1.result }}" == "success" ]] || \
-             [[ "${{ needs.stage2.result }}" == "success" ]] || \
-             [[ "${{ needs.stage3.result }}" == "success" ]] || \
-             [[ "${{ needs.stage4.result }}" == "success" ]] || \
-             [[ "${{ needs.stage5.result }}" == "success" ]] || \
-             [[ "${{ needs.stage6.result }}" == "success" ]] || \
-             [[ "${{ needs.stage7.result }}" == "success" ]] || \
-             [[ "${{ needs.stage8.result }}" == "success" ]] || \
-             [[ "${{ needs.stage9.result }}" == "success" ]] || \
-             [[ "${{ needs.stage10.result }}" == "success" ]]; then
+             [[ "${{ needs.stage2.result }}" == "success" ]]; then \
             echo "Pipeline succeeded - a stage passed"
             exit 0
           else
