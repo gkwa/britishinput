@@ -32,12 +32,10 @@ jobs:
   final-status:
     name: All Tests Passed
     if: always()
-    needs:
-      - stage1
-      - stage2
+    needs: [stage1, stage2]
     runs-on: ubuntu-latest
     steps:
       - if: |
-          needs.stage1.result != 'success' &&
-          needs.stage2.result != 'success'
+          !(needs.stage1.result == 'success' || 
+          needs.stage2.result == 'success')
         run: exit 1
