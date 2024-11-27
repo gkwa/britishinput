@@ -28,7 +28,7 @@ jobs:
         with:
           go-version: stable
       - run: go build
-      - run: ./britishinput pass
+      - run: ./britishinput fail
   final-status:
     name: All Tests Passed
     if: always()
