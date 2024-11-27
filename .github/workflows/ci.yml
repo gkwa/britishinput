@@ -28,7 +28,7 @@ jobs:
       - run: go build
       - run: ./britishinput pass
   pipeline-status:
-    name: Pipeline Status
+    name: All Tests Passed
     needs:
       - stage1
       - stage2
@@ -37,7 +37,7 @@ jobs:
     permissions:
       checks: write
     steps:
-      - name: All Tests Passed
+      - name: Check Pipeline Status
         run: |-
           if [[ "${{ needs.stage1.result }}" == "success" ]] || [[ "${{ needs.stage2.result }}" == "success" ]]; then
             echo "At least one stage succeeded"
