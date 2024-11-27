@@ -36,14 +36,20 @@ jobs:
       - stage2
     if: always()
     runs-on: ubuntu-latest
-    continue-on-error: true
+    permissions:
+      statuses: write
+    outputs:
+      status: ${{ steps.check.outputs.status }}
     steps:
-      - run: |-
+      - id: check
+        run: |-
           if [[ "${{ needs.stage1.result }}" == "success" ]] || \
              [[ "${{ needs.stage2.result }}" == "success" ]]; then \
             echo "Pipeline succeeded - a stage passed"
+            echo "status=success" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           echo "Pipeline failed - no stage passed"
+          echo "status=failure" >> "$GITHUB_OUTPUT"
           exit 1
