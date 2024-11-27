@@ -31,13 +31,9 @@ jobs:
       - run: ./britishinput fail
   final-status:
     name: All Tests Passed
+    needs: [stage1, stage2]
     if: always()
-    needs:
-      - stage1
-      - stage2
     runs-on: ubuntu-latest
     steps:
-      - if: |
-          !(needs.stage1.result == 'success' ||
-          needs.stage2.result == 'success')
+      - if: failure() && !contains(needs.*.result, 'success')
         run: exit 1
