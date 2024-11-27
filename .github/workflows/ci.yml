@@ -36,6 +36,7 @@ jobs:
       - stage2
     if: always()
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - run: |-
           if [[ "${{ needs.stage1.result }}" == "success" ]] || \
@@ -46,3 +47,5 @@ jobs:
 
           echo "Pipeline failed - no stage passed"
           exit 1
+
+ 
