@@ -47,5 +47,3 @@ jobs:
 
           echo "Pipeline failed - no stage passed"
           exit 1
-
- 
