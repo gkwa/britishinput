@@ -40,6 +40,6 @@ jobs:
       - run: |-
           if [[ "${{ needs.stage1.result }}" == "success" ]] || [[ "${{ needs.stage2.result }}" == "success" ]]; then
             exit 0
-          else
-            exit 1
           fi
+
+          exit 1
