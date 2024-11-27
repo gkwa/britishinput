@@ -2,40 +2,40 @@ name: Build & Test
 "on":
   push:
     branches:
-      - "*"
+    - '*'
   pull_request:
     branches:
-      - "*"
+    - '*'
   schedule:
-    - cron: 01 13 * * SAT
+  - cron: 01 13 * * SAT
 jobs:
   stage1:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
-      - uses: actions/checkout@3b9b8c884f6b4bb4d5be2779c26374abadae0871
-      - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
-        with:
-          go-version: stable
-      - run: go build
-      - run: ./britishinput fail
+    - uses: actions/checkout@3b9b8c884f6b4bb4d5be2779c26374abadae0871
+    - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
+      with:
+        go-version: stable
+    - run: go build
+    - run: ./britishinput fail
   stage2:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
-      - uses: actions/checkout@3b9b8c884f6b4bb4d5be2779c26374abadae0871
-      - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
-        with:
-          go-version: stable
-      - run: go build
-      - run: ./britishinput fail
+    - uses: actions/checkout@3b9b8c884f6b4bb4d5be2779c26374abadae0871
+    - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
+      with:
+        go-version: stable
+    - run: go build
+    - run: ./britishinput fail
   final-status:
     name: All Tests Passed
     needs:
-      - stage1
-      - stage2
+    - stage1
+    - stage2
     if: always()
     runs-on: ubuntu-latest
     steps:
-      - if: failure() && !contains(needs.*.result, 'success')
-        run: exit 1
+    - if: failure()
+      run: exit 1
