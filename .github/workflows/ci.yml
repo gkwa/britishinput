@@ -43,4 +43,5 @@ jobs:
           if [[ "${{ needs.stage1.result }}" == "success" || "${{ needs.stage2.result }}" == "success" ]]; then
             exit 0
           fi
+
           exit 1
