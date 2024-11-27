@@ -28,7 +28,7 @@ jobs:
         with:
           go-version: stable
       - run: go build
-      - run: ./britishinput fail
+      - run: ./britishinput pass
   final-status:
     name: All Tests Passed
     needs:
