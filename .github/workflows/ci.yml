@@ -37,9 +37,5 @@ jobs:
       - stage2
     runs-on: ubuntu-latest
     steps:
-      - run: |-
-          if [[ "${{ needs.stage1.result }}" == "success" ]] || [[ "${{ needs.stage2.result }}" == "success" ]]; then
-            exit 0
-          fi
-
-          exit 1
+      - if: needs.stage1.result != 'success' && needs.stage2.result != 'success'
+        run: exit 1
