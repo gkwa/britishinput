@@ -15,8 +15,8 @@ jobs:
       - uses: actions/checkout@3b9b8c884f6b4bb4d5be2779c26374abadae0871
       - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
         with:
-          go-version: ">=1.21"
-      - run: go build -v
+          go-version: stable
+      - run: go build
       - run: ./britishinput pass
   stage2:
     needs: stage1
@@ -26,8 +26,8 @@ jobs:
       - uses: actions/checkout@3b9b8c884f6b4bb4d5be2779c26374abadae0871
       - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
         with:
-          go-version: ">=1.21"
-      - run: go build -v
+          go-version: stable
+      - run: go build
       - run: ./britishinput pass
   final-status:
     name: All Tests Passed
