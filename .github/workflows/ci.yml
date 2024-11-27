@@ -42,7 +42,7 @@ jobs:
           if [[ "${{ needs.stage1.result }}" == "success" ]] || [[ "${{ needs.stage2.result }}" == "success" ]]; then
             echo "At least one stage succeeded"
             exit 0
-          else
-            echo "No stages succeeded"
-            exit 1
           fi
+
+          echo "No stages succeeded"
+          exit 1
