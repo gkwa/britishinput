@@ -38,9 +38,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |-
-          echo "Stage1 result: ${{ needs.stage1.result }}"
-          echo "Stage2 result: ${{ needs.stage2.result }}"
-          if [[ "${{ needs.stage1.result }}" == "success" || "${{ needs.stage2.result }}" == "success" ]]; then
+          echo "Stage1 conclusion: ${{ needs.stage1.conclusion }}"
+          echo "Stage2 conclusion: ${{ needs.stage2.conclusion }}"
+          if [[ "${{ needs.stage1.conclusion }}" == "success" || "${{ needs.stage2.conclusion }}" == "success" ]]; then
             exit 0
           fi
 
