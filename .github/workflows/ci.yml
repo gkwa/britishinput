@@ -37,7 +37,7 @@ jobs:
     permissions:
       checks: write
     steps:
-      - name: Check Pipeline Status
+      - name: All Tests Passed
         run: |-
           if [[ "${{ needs.stage1.result }}" == "success" ]] || [[ "${{ needs.stage2.result }}" == "success" ]]; then
             echo "At least one stage succeeded"
