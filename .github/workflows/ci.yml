@@ -8,9 +8,6 @@ name: Build & Test
       - "*"
   schedule:
     - cron: 01 13 * * SAT
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false
 jobs:
   stage1:
     runs-on: ubuntu-latest
@@ -20,10 +17,8 @@ jobs:
         with:
           go-version: stable
       - run: go build
-      - run: ./britishinput fail
+      - run: ./britishinput pass
   stage2:
-    needs: stage1
-    if: failure()
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3b9b8c884f6b4bb4d5be2779c26374abadae0871
@@ -32,18 +27,22 @@ jobs:
           go-version: stable
       - run: go build
       - run: ./britishinput pass
-  final-status:
+  pipeline-status:
     name: Pipeline Status
     needs:
       - stage1
       - stage2
+    if: always()
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
     steps:
-      - if: |
-          needs.stage1.result == 'success' ||
-          needs.stage2.result == 'success'
-        run: exit 0
-      - if: |
-          needs.stage1.result != 'success' &&
-          needs.stage2.result != 'success'
-        run: exit 1
+      - name: Check Pipeline Status
+        run: |-
+          if [[ "${{ needs.stage1.result }}" == "success" ]] || [[ "${{ needs.stage2.result }}" == "success" ]]; then
+            echo "At least one stage succeeded"
+            exit 0
+          else
+            echo "No stages succeeded"
+            exit 1
+          fi
