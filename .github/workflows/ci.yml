@@ -17,7 +17,7 @@ jobs:
         with:
           go-version: ">=1.21"
       - run: go build -v
-      - run: ./britishinput fail
+      - run: ./britishinput pass
   stage2:
     needs: stage1
     if: failure()
@@ -28,7 +28,7 @@ jobs:
         with:
           go-version: ">=1.21"
       - run: go build -v
-      - run: ./britishinput fail
+      - run: ./britishinput pass
   final-status:
     name: All Tests Passed
     needs:
