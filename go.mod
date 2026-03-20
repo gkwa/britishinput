@@ -1,11 +1,11 @@
 module github.com/gkwa/britishinput
 
-go 1.23.2
+go 1.25.0
 
 require (
-	github.com/fatih/color v1.18.0
+	github.com/fatih/color v1.19.0
 	github.com/go-git/go-git/v5 v5.12.0
-	github.com/go-logr/logr v1.4.3
+	github.com/go-logr/logr v1.4.2
 	github.com/go-logr/zerologr v1.2.3
 	github.com/google/go-containerregistry v0.20.2
 	github.com/magefile/mage v1.15.0
@@ -31,7 +31,7 @@ require (
 	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 // indirect
 	github.com/kevinburke/ssh_config v1.2.0 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
-	github.com/mattn/go-colorable v0.1.13 // indirect
+	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.2 // indirect
@@ -52,7 +52,7 @@ require (
 	golang.org/x/mod v0.17.0 // indirect
 	golang.org/x/net v0.26.0 // indirect
 	golang.org/x/sync v0.7.0 // indirect
-	golang.org/x/sys v0.25.0 // indirect
+	golang.org/x/sys v0.42.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
 	golang.org/x/tools v0.21.1-0.20240508182429-e35e4ccd0d2d // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
